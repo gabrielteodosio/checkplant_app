@@ -1,13 +1,15 @@
 ﻿import React from 'react';
+import { connect } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import { View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { View, Text, StyleSheet, Button, TouchableNativeFeedback } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 
 import { Colors } from '../../theme/colors'
 import CustomForm from '../../components/CustomForm';
 import CustomButton from '../../components/CustomButton';
 import CustomTextInput from '../../components/CustomTextInput';
+import { Creators as AuthActions } from '../../store/ducks/auth';
 
 const validation = {
   email: {
@@ -18,7 +20,7 @@ const validation = {
   },
 }
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({ navigation, signIn }) => {
   const { handleSubmit, register, setValue, formState: { errors } } = useForm({
     defaultValues: {
       email: '',
@@ -30,9 +32,9 @@ const LoginScreen = ({ navigation }) => {
     navigation.navigate('Register')
   }
 
-  const signIn = (data) => {
+  const handleSignIn = async (data) => {
     // TODO: Implement sign in feature
-    navigation.navigate('Map')
+    await signIn(data, navigation)
   }
 
   return (
@@ -51,7 +53,7 @@ const LoginScreen = ({ navigation }) => {
 
         <View style={styles.buttonsContainer}>
           <CustomButton
-            onPress={handleSubmit(signIn)}
+            onPress={handleSubmit(handleSignIn)}
             style={{ ...styles.buttons, marginRight: 10 }}
           >
             <Text style={styles.buttonText}>Entrar</Text>
@@ -98,4 +100,13 @@ const styles = StyleSheet.create({
   },
 })
 
-export default LoginScreen
+const mapStateToProps = ({ auth }) => ({ auth });
+
+const mapDispatchToProps = {
+  ...AuthActions,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(LoginScreen);
