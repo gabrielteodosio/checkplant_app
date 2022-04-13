@@ -1,22 +1,101 @@
 ﻿import React from 'react';
-import { SafeAreaView, ScrollView, Text, useColorScheme } from 'react-native'
+import { useForm } from 'react-hook-form';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Text, StyleSheet, Button, TouchableNativeFeedback } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 
-import { Colors } from '../../theme/colors';
+import { Colors } from '../../theme/colors'
+import CustomForm from '../../components/CustomForm';
+import CustomButton from '../../components/CustomButton';
+import CustomTextInput from '../../components/CustomTextInput';
 
-const LoginScreen = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+const validation = {
+  email: {
+    required: true,
+  },
+  password: {
+    required: true,
+  },
+}
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+const LoginScreen = ({ navigation }) => {
+  const { handleSubmit, register, setValue, formState: { errors } } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  })
+
+  const handleNavigateToRegister = () => {
+    navigation.navigate('Register')
+  }
+
+  const signIn = (data) => {
+    // TODO: Implement sign in feature
+    console.log(data)
+  }
 
   return (
-    <SafeAreaView >
-      <ScrollView style={backgroundStyle} contentInsetAdjustmentBehavior="automatic">
-        <Text>Olá mundo</Text>
-      </ScrollView>
+    <SafeAreaView style={styles.container}>
+      <KeyboardAwareScrollView contentContainerStyle={styles.centerContent}>
+        <Text style={styles.title}>
+          Checkplant Test
+        </Text>
+
+        <View style={styles.formContainer}>
+          <CustomForm {...{ register, setValue, validation, errors }}>
+            <CustomTextInput name="email" label="Email" />
+            <CustomTextInput secureTextEntry name="password" label="Senha" />
+          </CustomForm>
+        </View>
+
+        <View style={styles.buttonsContainer}>
+          <CustomButton
+            onPress={handleSubmit(signIn)}
+            style={{ ...styles.buttons, marginRight: 10 }}
+          >
+            <Text style={styles.buttonText}>Entrar</Text>
+          </CustomButton>
+
+          <CustomButton
+            style={styles.buttons}
+            onPress={handleNavigateToRegister}
+          >
+            <Text style={styles.buttonText}>Registrar</Text>
+          </CustomButton>
+        </View>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.darker,
+  },
+  centerContent: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  title: {
+    fontSize: 32,
+    marginBottom: 150,
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    marginTop: 150,
+  },
+  buttons: {
+    borderRadius: 5,
+    width: '35%'
+  },
+  buttonText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    textTransform: 'uppercase'
+  },
+})
 
 export default LoginScreen
