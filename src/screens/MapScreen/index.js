@@ -71,17 +71,17 @@ const MapScreen = ({ navigation }) => {
   return (
     <View style={styles.mapContainer}>
       <MapView
-        ref={(ref) => mapRef.current = ref}
-        style={styles.map}
         zoomEnabled
+        ref={mapRef}
         zoomTapEnabled
         showsUserLocation
+        style={styles.map}
         zoomControlEnabled
-        showsMyLocationButton
         onPress={placeMarker}
-        provider={PROVIDER_GOOGLE}
+        showsMyLocationButton
         initialRegion={mapRegion}
-        onRegionChange={(region) => setMapRegion(region)}
+        provider={PROVIDER_GOOGLE}
+        onRegionChange={setMapRegion}
       >
         {markers.map((marker, markerIdx) => (
           <Marker
