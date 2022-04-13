@@ -32,7 +32,7 @@ const LoginScreen = ({ navigation }) => {
 
   const signIn = (data) => {
     // TODO: Implement sign in feature
-    console.log(data)
+    navigation.navigate('Map')
   }
 
   return (
