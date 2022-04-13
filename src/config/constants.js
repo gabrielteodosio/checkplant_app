@@ -10,8 +10,6 @@ const CONFIG = {
   },
 };
 
-console.log(__DEV__ ? "val me da um beijo" : "eu dou um beijo em val")
-
 class Constants {
   getConfig = (env = DEFAULT_CONFIG) => CONFIG[env];
 }
