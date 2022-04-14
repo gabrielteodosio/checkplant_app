@@ -14,19 +14,19 @@ const persistConfig = {
 const middlewares = [];
 const enhancers = [];
 
-const sagaMiddleware = createSagaMiddleware();
+const sagaMonitor = __DEV__ ? console.tron.createSagaMonitor() : null;
+
+const sagaMiddleware = createSagaMiddleware({ sagaMonitor });
 
 middlewares.push(sagaMiddleware);
 enhancers.push(applyMiddleware(...middlewares));
 
-// const composer = __DEV__
-//   ? compose(
-//     ...enhancers,
-//     console.tron.createEnhancer(),
-//   )
-//   : compose(...enhancers);
-
-const composer = compose(...enhancers);
+const composer = __DEV__
+  ? compose(
+    ...enhancers,
+    console.tron.createEnhancer(),
+  )
+  : compose(...enhancers);
 
 const persistedReducers = persistReducer(persistConfig, reducers);
 const store = createStore(persistedReducers, composer);
