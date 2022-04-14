@@ -52,7 +52,44 @@ function* signOut({ navigation }) {
   }
 }
 
+function* signUp({ body, navigation }) {
+  try {
+    const { data, status } = yield call(axios.post, `${BASE_URL}/users`, body,
+      {
+        headers: {
+          Accept: '*/*',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (status === 201) {
+      yield put(Creators.signUpSuccess(data.token));
+      navigation.navigate('Map');
+
+      Toast.show('Usuário registrado com sucesso', {
+        delay: 0,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        textColor: 'white',
+        backgroundColor: 'green',
+        position: Platform.select({
+          ios: 50,
+          android: 20 + StatusBar.currentHeight,
+        }),
+        duration: Toast.durations.LONG,
+      });
+    } else {
+      throw new Error('Error authenticating user');
+    }
+  } catch (err) {
+    yield put(Creators.signUpError(err));
+  }
+}
+
 export default [
   takeLatest(Types.SIGN_IN, signIn),
   takeLatest(Types.SIGN_OUT, signOut),
+  takeLatest(Types.SIGN_UP, signUp),
 ];

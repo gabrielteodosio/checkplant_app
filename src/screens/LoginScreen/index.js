@@ -33,7 +33,6 @@ const LoginScreen = ({ navigation, signIn }) => {
   }
 
   const handleSignIn = async (data) => {
-    // TODO: Implement sign in feature
     await signIn(data, navigation)
   }
 
@@ -42,6 +41,10 @@ const LoginScreen = ({ navigation, signIn }) => {
       <KeyboardAwareScrollView contentContainerStyle={styles.centerContent}>
         <Text style={styles.title}>
           Checkplant Test
+        </Text>
+
+        <Text style={styles.subTitle}>
+          Login
         </Text>
 
         <View style={styles.formContainer}>
@@ -83,6 +86,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
+    marginBottom: 25,
+  },
+  subTitle: {
+    fontSize: 28,
     marginBottom: 150,
   },
   buttonsContainer: {
