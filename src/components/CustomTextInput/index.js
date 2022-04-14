@@ -5,7 +5,7 @@ import { Colors } from '../../theme/colors'
 
 const CustomTextInput = forwardRef(
   (props, ref) => {
-    const { label, labelStyle, error, ...inputProps } = props
+    const { label, labelStyle, inputStyle, error, ...inputProps } = props
     return (
       <View style={styles.container}>
         {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
@@ -15,6 +15,7 @@ const CustomTextInput = forwardRef(
           style={[
             styles.inputContainer,
             { borderColor: error ? '#fc6d47' : '#c0cbd3' },
+            inputStyle,
           ]}
           {...inputProps}
         />

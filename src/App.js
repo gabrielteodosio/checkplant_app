@@ -1,3 +1,5 @@
+import 'react-native-gesture-handler'
+
 import React from 'react';
 import { LogBox } from 'react-native'
 import { Provider } from 'react-redux'
@@ -7,6 +9,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import './config/Reactotron';
+
 import { routes } from './routes/routes';
 import { store, persistor } from './store';
 
