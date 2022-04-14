@@ -25,11 +25,10 @@ const LONGITUDE = -122.4324;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-const MapScreen = ({ navigation, map, fetchMarkers, newAnnotation }) => {
+const MapScreen = ({ map, fetchMarkers, newAnnotation }) => {
   const mapRef = useRef()
   const bottomSheetRef = useRef()
 
-  const [markers, setMarkers] = useState([])
   const [newMarker, setNewMarker] = useState()
   const [mapRegion, setMapRegion] = useState({
     latitude: LATITUDE,
@@ -87,14 +86,10 @@ const MapScreen = ({ navigation, map, fetchMarkers, newAnnotation }) => {
   }
 
   async function handleNewAnnotation(data) {
-    try {
-      await newAnnotation(data)
-      setNewMarker(null)
-      if (bottomSheetRef.current) {
-        bottomSheetRef.current.snapTo(1)
-      }
-    } catch (error) {
-      console.log('deu merda aqui viu, se liga')
+    await newAnnotation(data)
+    setNewMarker(null)
+    if (bottomSheetRef.current) {
+      bottomSheetRef.current.snapTo(1)
     }
   }
 
@@ -148,7 +143,7 @@ const MapScreen = ({ navigation, map, fetchMarkers, newAnnotation }) => {
               }}
             >
               <Callout>
-                <Text style={{ color: Colors.black }}>{marker.latitude} , {marker.longitude}</Text>
+                <Text style={{ color: Colors.black }}>{marker?.description}</Text>
               </Callout>
             </Marker>
           ))}
