@@ -1,4 +1,4 @@
-﻿import React from 'react'
+﻿import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { View, Text, StyleSheet } from 'react-native'
 
@@ -19,7 +19,7 @@ const validation = {
   },
 }
 
-const NewAnnotationForm = ({ newMarker, closeSheet, onSubmit }) => {
+const NewAnnotationForm = ({ newMarker, onClose, onSubmit }) => {
   const { handleSubmit, reset, register, setValue, formState: { errors } } = useForm({
     defaultValues: {
       description: '',
@@ -30,10 +30,15 @@ const NewAnnotationForm = ({ newMarker, closeSheet, onSubmit }) => {
 
   function handleCancel() {
     reset()
-    if (closeSheet) {
-      closeSheet()
+    if (onClose) {
+      onClose()
     }
   }
+
+  useEffect(() => {
+    setValue('latitude', newMarker?.latitude, { shouldDirty: true, shouldTouch: true, shouldValidate: true })
+    setValue('longitude', newMarker?.longitude, { shouldDirty: true, shouldTouch: true, shouldValidate: true })
+  }, [newMarker])
 
   return (
     <View style={styles.bottomSheetContainer}>

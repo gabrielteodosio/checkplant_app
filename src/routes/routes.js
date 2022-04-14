@@ -1,8 +1,16 @@
 ﻿import MapScreen from "../screens/MapScreen";
 import LoginScreen from "../screens/LoginScreen";
+import SplashScreen from "../screens/SplashScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 
+import { Colors } from "../theme/colors";
+
 export const routes = [
+  {
+    name: 'Splash',
+    component: SplashScreen,
+    options: { headerShown: false },
+  },
   {
     name: 'Login',
     component: LoginScreen,
@@ -11,7 +19,14 @@ export const routes = [
   {
     name: 'Map',
     component: MapScreen,
-    options: { headerShown: false },
+    options: {
+      title: 'Mapa',
+      headerShown: true,
+      headerMode: 'screen',
+      backgroundColor: Colors.primary,
+      headerTintColor: Colors.lighter,
+      headerStyle: { backgroundColor: Colors.primary },
+    },
   },
   {
     name: 'Register',

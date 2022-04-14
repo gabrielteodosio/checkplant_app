@@ -29,7 +29,7 @@ const LoginScreen = ({ navigation, signIn }) => {
   })
 
   const handleNavigateToRegister = () => {
-    navigation.navigate('Register')
+    navigation.replace('Register')
   }
 
   const handleSignIn = async (data) => {

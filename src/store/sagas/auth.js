@@ -18,7 +18,7 @@ function* signIn({ body, navigation }) {
 
     if (status === 200) {
       yield put(Creators.signInSuccess(data.token));
-      navigation.navigate('Map');
+      navigation.replace('Map');
 
       Toast.show('Usuário logado com sucesso', {
         delay: 0,
@@ -65,7 +65,7 @@ function* signUp({ body, navigation }) {
 
     if (status === 201) {
       yield put(Creators.signUpSuccess(data.token));
-      navigation.navigate('Map');
+      navigation.replace('Map');
 
       Toast.show('Usuário registrado com sucesso', {
         delay: 0,

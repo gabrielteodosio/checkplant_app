@@ -33,7 +33,7 @@ const App = () => {
       <PersistGate persistor={persistor}>
         <SafeAreaProvider>
           <NavigationContainer>
-            <MainStack.Navigator initialRouteName='Login'>
+            <MainStack.Navigator initialRouteName='Splash'>
               {routes.map((route, idx) => (
                 <MainStack.Screen
                   key={`${new Date().getTime()}-screen-${idx}`}

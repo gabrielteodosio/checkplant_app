@@ -29,7 +29,7 @@ const RegisterScreen = ({ navigation, signUp }) => {
   })
 
   const handleCancelRegister = () => {
-    navigation.navigate('Login')
+    navigation.replace('Login')
   }
 
   const handleRegister = async (data) => {

@@ -1,4 +1,5 @@
 ﻿import React, { useEffect, useState, useRef } from 'react'
+import { connect } from 'react-redux';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Geolocation from '@react-native-community/geolocation'
 import NewAnnotationForm from './components/NewAnnotationForm';
@@ -14,6 +15,7 @@ import {
 } from 'react-native'
 
 import { Colors } from '../../theme/colors'
+import { Creators as MapActions } from '../../store/ducks/map';
 
 const { width, height } = Dimensions.get('window');
 
@@ -23,11 +25,10 @@ const LONGITUDE = -122.4324;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-const MapScreen = ({ navigation }) => {
+const MapScreen = ({ navigation, map, fetchMarkers, newAnnotation }) => {
   const mapRef = useRef()
   const bottomSheetRef = useRef()
 
-  const [canScrollMap, setCanScrollMap] = useState(true)
   const [markers, setMarkers] = useState([])
   const [newMarker, setNewMarker] = useState()
   const [mapRegion, setMapRegion] = useState({
@@ -62,6 +63,8 @@ const MapScreen = ({ navigation }) => {
         }
       })
     }
+
+    fetchMarkers()
   }, [])
 
   function animateToRegion(region) {
@@ -83,8 +86,22 @@ const MapScreen = ({ navigation }) => {
     }
   }
 
-  function handleNewAnnotation() {
+  async function handleNewAnnotation(data) {
+    try {
+      await newAnnotation(data)
+      setNewMarker(null)
+      if (bottomSheetRef.current) {
+        bottomSheetRef.current.snapTo(1)
+      }
+    } catch (error) {
+      console.log('deu merda aqui viu, se liga')
+    }
+  }
 
+  function handleCloseSheet() {
+    if (bottomSheetRef.current) {
+      bottomSheetRef.current.snapTo(1)
+    }
   }
 
   return (
@@ -101,7 +118,6 @@ const MapScreen = ({ navigation }) => {
           showsMyLocationButton
           initialRegion={mapRegion}
           provider={PROVIDER_GOOGLE}
-          scrollEnabled={canScrollMap}
           onRegionChange={setMapRegion}
         >
           {newMarker && (
@@ -122,13 +138,13 @@ const MapScreen = ({ navigation }) => {
               </Callout>
             </Marker>
           )}
-          {markers.map((marker, markerIdx) => (
+          {map.markers.map((marker, markerIdx) => (
             <Marker
               key={`${Date.now()}-marker-${markerIdx}`}
               pinColor='green'
               coordinate={{
-                latitude: marker.latitude,
-                longitude: marker.longitude,
+                latitude: parseFloat(marker.latitude),
+                longitude: parseFloat(marker.longitude),
               }}
             >
               <Callout>
@@ -146,7 +162,7 @@ const MapScreen = ({ navigation }) => {
             <NewAnnotationForm
               newMarker={newMarker}
               onSubmit={handleNewAnnotation}
-              closeSheet={() => bottomSheetRef.current.snapTo(1)}
+              onClose={handleCloseSheet}
             />
           )}
         />
@@ -171,4 +187,13 @@ const styles = StyleSheet.create({
   },
 })
 
-export default MapScreen
+const mapStateToProps = ({ map }) => ({ map });
+
+const mapDispatchToProps = {
+  ...MapActions,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(MapScreen)
