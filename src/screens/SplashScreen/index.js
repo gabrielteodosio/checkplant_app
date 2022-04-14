@@ -7,7 +7,7 @@ const SplashScreen = ({ navigation, auth }) => {
     const { token } = auth
 
     if (token) {
-      navigation.replace('Map')
+      navigation.replace('MapStack')
     } else {
       navigation.replace('Login')
     }

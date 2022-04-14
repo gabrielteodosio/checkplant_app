@@ -18,7 +18,7 @@ function* signIn({ body, navigation }) {
 
     if (status === 200) {
       yield put(Creators.signInSuccess(data.token));
-      navigation.replace('Map');
+      navigation.replace('MapStack');
 
       Toast.show('Usuário logado com sucesso', {
         delay: 0,
@@ -44,12 +44,17 @@ function* signIn({ body, navigation }) {
 function* signOut({ navigation }) {
   const { token } = yield select((state) => state.auth);
 
-  if (token) {
-    yield put(Creators.signOutSuccess());
-    navigation.navigate('Login');
-  } else {
-    yield put(Creators.signOutError());
+  try {
+    if (token) {
+      yield put(Creators.signOutSuccess());
+      navigation.replace('Login');
+    } else {
+      throw new Error('No user to sign out')
+    }
+  } catch (error) {
+    yield put(Creators.signOutError(error));
   }
+
 }
 
 function* signUp({ body, navigation }) {
@@ -65,7 +70,7 @@ function* signUp({ body, navigation }) {
 
     if (status === 201) {
       yield put(Creators.signUpSuccess(data.token));
-      navigation.replace('Map');
+      navigation.replace('MapStack');
 
       Toast.show('Usuário registrado com sucesso', {
         delay: 0,

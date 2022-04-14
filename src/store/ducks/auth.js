@@ -43,7 +43,7 @@ const signUpError = (state) => ({ ...state, error: null, signingUp: false });
 /* Register Reducers */
 /* Logout Reducers */
 const signOut = (state) => ({ ...state, signingOut: true });
-const signOutSuccess = (state) => ({ ...state, signingOut: false });
+const signOutSuccess = (state) => ({ ...state, token: null, signingOut: false });
 const signOutError = (state, { error }) => ({
   ...state,
   error,
